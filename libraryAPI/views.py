@@ -2,24 +2,26 @@ from libraryAPI.models import User, Author, Publisher, Book
 from rest_framework import viewsets
 from rest_framework import permissions
 from libraryAPI.serializers import UserSerializer, AuthorSerializer, PublisherSerializer, BookSerializer
+from rest_framework.decorators import action
 
-
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    This viewset automatically provides `list` and `retrieve` actions.
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
 class AuthorViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows authors to be viewed or edited.
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+
+    Additionally we also provide an extra `highlight` action.
     """
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class PublisherViewSet(viewsets.ModelViewSet):
@@ -28,7 +30,7 @@ class PublisherViewSet(viewsets.ModelViewSet):
     """
     queryset = Publisher.objects.all()
     serializer_class = PublisherSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class BookViewSet(viewsets.ModelViewSet):
@@ -37,4 +39,4 @@ class BookViewSet(viewsets.ModelViewSet):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
