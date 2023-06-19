@@ -2,8 +2,9 @@
 import os
 from django.core.management.base import BaseCommand
 
-from your-app.models import User # Change this to reflect your app's name and name of your custom User model
-from your-project import settings # Change this to reflect your app's name
+# Change this to reflect your app's name and name of your custom User model
+from libraryAPI.models import User
+from library import settings  # Change this to reflect your app's name
 
 
 # To run this management command:
@@ -13,16 +14,18 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if os.environ.get('RENDER'):
-          user, created = User.objects.get_or_create(
+            user, created = User.objects.get_or_create(
                 username=settings.DJANGO_SUPERUSER_USERNAME
             )
-          if created:
-            user.email = settings.DJANGO_SUPERUSER_EMAIL
-            user.set_password(settings.DJANGO_SUPERUSER_PASSWORD)
-            user.is_superuser = True
-            user.is_staff = True
-            user.save()
-            msg = self.style.SUCCESS(f"Superuser {settings.DJANGO_SUPERUSER_USERNAME} added to database.")
-          else:
-            msg = self.style.WARNING(f"Superuser {settings.DJANGO_SUPERUSER_USERNAME} already exists.")
-          self.stdout.write(msg)
+            if created:
+                user.email = settings.DJANGO_SUPERUSER_EMAIL
+                user.set_password(settings.DJANGO_SUPERUSER_PASSWORD)
+                user.is_superuser = True
+                user.is_staff = True
+                user.save()
+                msg = self.style.SUCCESS(
+                    f"Superuser {settings.DJANGO_SUPERUSER_USERNAME} added to database.")
+            else:
+                msg = self.style.WARNING(
+                    f"Superuser {settings.DJANGO_SUPERUSER_USERNAME} already exists.")
+            self.stdout.write(msg)
