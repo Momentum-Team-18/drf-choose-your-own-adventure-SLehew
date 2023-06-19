@@ -37,3 +37,27 @@ class Book(models.Model):
         to=Author, on_delete=models.CASCADE, related_name='authors_of_books')
     book_publisher = models.ForeignKey(
         to=Publisher, on_delete=models.CASCADE, related_name='publishers_of_books')
+    book_featured = models.BooleanField(default=False)
+
+
+class Note(models.Model):
+    note_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    related_book = models.ForeignKey(to=Book, on_delete=models.CASCADE)
+    user_note = models.TextField()
+    note_private = models.BooleanField(default=False)
+
+
+class UserLibrary(models.Model):
+    READ = 'R'
+    READING = 'RD'
+    WANT_TO_READ = 'WR'
+    BOOK_STATUS_CHOICES = [
+        (READ, 'read'),
+        (READING, 'reading'),
+        (WANT_TO_READ, 'want_to_read'),
+    ]
+    library_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    user_book = models.ForeignKey(to=Book, on_delete=models.CASCADE)
+    book_status = models.CharField(
+        choices=BOOK_STATUS_CHOICES, default=WANT_TO_READ)
+    book_note = models.ForeignKey(to=Note, on_delete=models.CASCADE)

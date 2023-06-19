@@ -1,10 +1,10 @@
-from libraryAPI.models import User, Author, Publisher, Book
-from rest_framework import viewsets
-from rest_framework import permissions
-from libraryAPI.serializers import UserSerializer, AuthorSerializer, PublisherSerializer, BookSerializer
+from rest_framework import viewsets, permissions, filters
 from rest_framework.decorators import action
+from libraryAPI.models import User, Author, Publisher, Book
+from libraryAPI.serializers import UserSerializer, AuthorSerializer, PublisherSerializer, BookSerializer
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+
+class UserViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list` and `retrieve` actions.
     """
@@ -21,7 +21,9 @@ class AuthorViewSet(viewsets.ModelViewSet):
     """
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['author_last_name', 'author_first_name']
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class PublisherViewSet(viewsets.ModelViewSet):
@@ -30,7 +32,9 @@ class PublisherViewSet(viewsets.ModelViewSet):
     """
     queryset = Publisher.objects.all()
     serializer_class = PublisherSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['publisher_name']
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class BookViewSet(viewsets.ModelViewSet):
@@ -39,4 +43,6 @@ class BookViewSet(viewsets.ModelViewSet):
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'genre']
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
