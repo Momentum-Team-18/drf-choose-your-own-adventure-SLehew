@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
+    def __str__(self):
+        return self.username
 
 
 class Author(models.Model):
@@ -31,10 +33,7 @@ class Book(models.Model):
     book_pages = models.IntegerField(blank=True, null=True)
     book_genre = models.CharField(choices=GENRE_CHOICES, blank=True, null=True)
     childrens_book = models.BooleanField(default=False)
-    book_author = models.ForeignKey(to=Author, on_delete=models.CASCADE, related_name='authors_of_books')
-    book_publisher = models.ForeignKey(to=Publisher, on_delete=models.CASCADE, related_name='publishers_of_books')
-
-
-
-
-
+    book_author = models.ForeignKey(
+        to=Author, on_delete=models.CASCADE, related_name='authors_of_books')
+    book_publisher = models.ForeignKey(
+        to=Publisher, on_delete=models.CASCADE, related_name='publishers_of_books')
