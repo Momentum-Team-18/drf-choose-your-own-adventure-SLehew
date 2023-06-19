@@ -12,10 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env(
     DEBUG=(bool, False),
@@ -23,12 +21,11 @@ env = environ.Env(
     RENDER=(bool, False),
 )
 
-if env("RENDER"):
-    ALLOWED_HOSTS.append(env("RENDER_EXTERNAL_HOSTNAME"))
-    DJANGO_SUPERUSER_USERNAME = env("DJANGO_SUPERUSER_USERNAME")  # add this
-    DJANGO_SUPERUSER_PASSWORD = env(
-        "DJANGO_SUPERUSER_PASSWORD")  # add this too
-    DJANGO_SUPERUSER_EMAIL = env("DJANGO_SUPERUSER_EMAIL")  # and also this
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 
 environ.Env.read_env()
 
@@ -37,13 +34,19 @@ environ.Env.read_env()
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-31l2)!yrtehs&%txgk2o7u(%+(xk(5cc3h0+gp+9l-ku%eb3f&'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+if env("RENDER"):
+    ALLOWED_HOSTS.append(env("RENDER_EXTERNAL_HOSTNAME"))
+    DJANGO_SUPERUSER_USERNAME = env("DJANGO_SUPERUSER_USERNAME")  # add this
+    DJANGO_SUPERUSER_PASSWORD = env(
+        "DJANGO_SUPERUSER_PASSWORD")  # add this too
+    DJANGO_SUPERUSER_EMAIL = env("DJANGO_SUPERUSER_EMAIL")  # and also this
 
 # Application definition
 
