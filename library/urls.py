@@ -8,6 +8,8 @@ router.register(r'users', views.UserViewSet, basename="user")
 router.register(r'author', views.AuthorViewSet, basename="author")
 router.register(r'publisher', views.PublisherViewSet, basename="publisher")
 router.register(r'book', views.BookViewSet, basename="book")
+router.register(r'user_library', views.UserLibraryViewSet,
+                basename="user_library")
 
 
 # The API URLs are now determined automatically by the router.

@@ -56,3 +56,11 @@ class UserLibraryViewSet(viewsets.ModelViewSet):
     serializer_class = UserLibrarySerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['library_user', 'user_book', 'book_status', 'book_note']
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the books
+        for the currently authenticated user.
+        """
+        queryset = UserLibrary.objects.filter(user=self.request.user)
+        return queryset
