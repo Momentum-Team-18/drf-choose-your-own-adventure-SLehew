@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from libraryAPI.models import User, Author, Publisher, Book
+from libraryAPI.models import User, Author, Publisher, Book, UserLibrary
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -25,3 +25,10 @@ class BookSerializer(serializers.HyperlinkedModelSerializer):
         model = Book
         fields = ['url', 'book_title', 'book_pages', 'book_genre',
                   'childrens_book', 'book_author', 'book_publisher', 'book_featured']
+
+
+class UserLibrarySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = UserLibrary
+        fields = ['url', 'library_user',
+                  'user_book', 'book_status', 'book_note']

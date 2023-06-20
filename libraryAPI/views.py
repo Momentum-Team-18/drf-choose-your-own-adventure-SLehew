@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions, filters
 from rest_framework.decorators import action
-from libraryAPI.models import User, Author, Publisher, Book
-from libraryAPI.serializers import UserSerializer, AuthorSerializer, PublisherSerializer, BookSerializer
+from libraryAPI.models import User, Author, Publisher, Book, UserLibrary
+from libraryAPI.serializers import UserSerializer, AuthorSerializer, PublisherSerializer, BookSerializer, UserLibrarySerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -46,3 +46,13 @@ class BookViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'genre']
     # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class UserLibraryViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows authors to be viewed or edited.
+    """
+    queryset = UserLibrary.objects.all()
+    serializer_class = UserLibrarySerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['library_user', 'user_book', 'book_status', 'book_note']
